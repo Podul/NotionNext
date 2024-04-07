@@ -37,6 +37,7 @@ export const GameListIndexCombine = ({ posts }) => {
       // 试图将4合一卡组塞满
       while (gamesClone?.length > 0 && groupItems.length < 4) {
         const item = gamesClone.shift()
+        index++
         if (
           item.tags?.some(
             t => t === siteConfig('GAME_RECOMMEND_TAG', 'Recommend', CONFIG)
@@ -59,6 +60,7 @@ export const GameListIndexCombine = ({ posts }) => {
         // 剩余的4合一不满4个的给他放大卡
         while (groupItems.length > 0) {
           const item = groupItems.shift()
+          index++
           components.push(
             <GameItem key={index++} item={item} isLargeCard={true} />
           )
@@ -102,7 +104,7 @@ export const GameListIndexCombine = ({ posts }) => {
  */
 const GameAd = () => {
   return (
-    <div className='card-group border border-gray-600 rounded game-ad h-[20rem] w-full overflow-hidden'>
+    <div className='card-group rounded game-ad h-[20rem] w-full overflow-hidden'>
       <AdSlot type='flow' />
     </div>
   )
