@@ -2,12 +2,9 @@
   "compilerOptions": {
     "baseUrl": ".",
     "paths": {
-      "@/*": ["./*"],
-      "@/components/*": ["components/*"],
-      "@/theme/*": ["theme/*"],
-      "@/data/*": ["data/*"],
-      "@/lib/*": ["lib/*"],
-      "@/styles/*": ["styles/*"]
+      "@/*": ["src/*"],
+      "@/blog.config": ["./blog.config.js"]
     }
-  }
+  },
+  "exclude": ["**/node_modules/**", "**/out/**", "./**/*.ts"]
 }

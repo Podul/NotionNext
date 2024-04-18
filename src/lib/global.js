@@ -1,8 +1,12 @@
-import { generateLocaleDict, initLocale, saveLangToLocalStorage } from './lang'
-import { createContext, useContext, useEffect, useState } from 'react'
+import { APPEARANCE, LANG, THEME } from '@/blog.config'
+import {
+  THEMES,
+  initDarkMode,
+  saveDarkModeToLocalStorage
+} from '@/themes/theme'
 import { useRouter } from 'next/router'
-import { THEMES, initDarkMode, saveDarkModeToLocalStorage } from '@/themes/theme'
-import { APPEARANCE, LANG, THEME } from 'blog.config'
+import { createContext, useContext, useEffect, useState } from 'react'
+import { generateLocaleDict, initLocale, saveLangToLocalStorage } from './lang'
 const GlobalContext = createContext()
 
 /**
@@ -12,9 +16,18 @@ const GlobalContext = createContext()
  * @constructor
  */
 export function GlobalContextProvider(props) {
-  const { post, children, siteInfo, categoryOptions, tagOptions, NOTION_CONFIG } = props
+  const {
+    post,
+    children,
+    siteInfo,
+    categoryOptions,
+    tagOptions,
+    NOTION_CONFIG
+  } = props
   const [lang, updateLang] = useState(NOTION_CONFIG?.LANG || LANG) // 默认语言
-  const [locale, updateLocale] = useState(generateLocaleDict(NOTION_CONFIG?.LANG || LANG)) // 默认语言
+  const [locale, updateLocale] = useState(
+    generateLocaleDict(NOTION_CONFIG?.LANG || LANG)
+  ) // 默认语言
   const [theme, setTheme] = useState(NOTION_CONFIG?.THEME || THEME) // 默认博客主题
   const defaultDarkMode = NOTION_CONFIG?.APPEARANCE || APPEARANCE
   const [isDarkMode, updateDarkMode] = useState(defaultDarkMode === 'dark') // 默认深色模式

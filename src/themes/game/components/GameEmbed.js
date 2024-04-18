@@ -54,7 +54,7 @@ export default function GameEmbed({ post, siteInfo }) {
   }
 
   function reloadIframe() {
-    var iframe = document.getElementById('game-wrapper')
+    const iframe = document.getElementById('game-wrapper')
     iframe.contentWindow.location.reload()
   }
 

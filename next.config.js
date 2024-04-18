@@ -28,7 +28,7 @@ function scanSubdirectories(directory) {
   return subdirectories
 }
 // 扫描项目 /themes下的目录名
-const themes = scanSubdirectories(path.resolve(__dirname, 'themes'))
+const themes = scanSubdirectories(path.resolve(__dirname, 'src', 'themes'))
 module.exports = withBundleAnalyzer({
   images: {
     // 图片压缩
@@ -94,10 +94,11 @@ module.exports = withBundleAnalyzer({
     // }
     // 动态主题：添加 resolve.alias 配置，将动态路径映射到实际路径
     if (!isServer) {
-      console.log('[加载主题]', path.resolve(__dirname, 'themes', THEME))
+      console.log('[加载主题]', path.resolve(__dirname, 'src', 'themes', THEME))
     }
     config.resolve.alias['@theme-components'] = path.resolve(
       __dirname,
+      'src',
       'themes',
       THEME
     )

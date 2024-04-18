@@ -75,8 +75,8 @@ export function checkContainHttp(str) {
 
 /**
  * 加载外部资源
- * @param url 地址 例如 https://xx.com/xx.js
- * @param type js 或 css
+ * @param {string} url 地址 例如 https://xx.com/xx.js
+ * @param {"js" | "css" | "font"} type js 或 css
  * @returns {Promise<unknown>}
  */
 export function loadExternalResource(url, type) {
