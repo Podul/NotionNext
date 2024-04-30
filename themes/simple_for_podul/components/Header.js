@@ -1,8 +1,7 @@
 import LazyImage from '@/components/LazyImage'
-import Link from 'next/link'
-import CONFIG from '../config'
-import SocialButton from './SocialButton'
 import { siteConfig } from '@/lib/config'
+import Link from 'next/link'
+import SocialButton from './SocialButton'
 
 /**
  * 网站顶部

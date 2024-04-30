@@ -13,10 +13,10 @@ import BlogPostBar from './components/BlogPostBar'
 import CONFIG from './config'
 import { Style } from './style'
 
-const AlgoliaSearchModal = dynamic(
-  () => import('@/components/AlgoliaSearchModal'),
-  { ssr: false }
-)
+// const AlgoliaSearchModal = dynamic(
+//   () => import('@/components/AlgoliaSearchModal'),
+//   { ssr: false }
+// )
 
 // 主题组件
 const BlogListScroll = dynamic(() => import('./components/BlogListScroll'), {
@@ -39,7 +39,7 @@ const ShareBar = dynamic(() => import('@/components/ShareBar'), { ssr: false })
 const TopBar = dynamic(() => import('./components/TopBar'), { ssr: false })
 const Header = dynamic(() => import('./components/Header'), { ssr: false })
 const NavBar = dynamic(() => import('./components/NavBar'), { ssr: false })
-const SideBar = dynamic(() => import('./components/SideBar'), { ssr: false })
+// const SideBar = dynamic(() => import('./components/SideBar'), { ssr: false })
 const JumpToTopButton = dynamic(() => import('./components/JumpToTopButton'), {
   ssr: false
 })
@@ -67,14 +67,14 @@ export const useSimpleGlobal = () => useContext(ThemeGlobalSimple)
  */
 const LayoutBase = props => {
   const { children, slotTop } = props
-  const { onLoading, fullWidth } = useGlobal()
+  const { onLoading } = useGlobal()
   const searchModal = useRef(null)
 
   return (
     <ThemeGlobalSimple.Provider value={{ searchModal }}>
       <div
         id='theme-simple'
-        className={`${siteConfig('FONT_STYLE')} min-h-screen flex flex-col dark:text-gray-300  bg-white dark:bg-black scroll-smooth`}>
+        className={`${siteConfig('FONT_STYLE')} max-w-screen-xl mx-auto min-h-screen flex flex-col dark:text-gray-300  bg-white dark:bg-black scroll-smooth`}>
         <Style />
 
         {siteConfig('SIMPLE_TOP_BAR', null, CONFIG) && <TopBar {...props} />}
@@ -91,9 +91,9 @@ const LayoutBase = props => {
           className={
             (JSON.parse(siteConfig('LAYOUT_SIDEBAR_REVERSE'))
               ? 'flex-row-reverse'
-              : '') + ' w-full flex-1 flex items-start max-w-9/10 mx-auto pt-12'
+              : '') + ' w-full flex-1 flex items-start max-w-9/10 mx-auto'
           }>
-          <div id='container-inner ' className='w-full flex-grow min-h-fit'>
+          <div id='container-inner' className='w-full flex-grow min-h-fit mt-8'>
             <Transition
               show={!onLoading}
               appear={true}
@@ -111,13 +111,13 @@ const LayoutBase = props => {
             <AdSlot type='native' />
           </div>
 
-          {fullWidth ? null : (
+          {/* {fullWidth ? null : (
             <div
               id='right-sidebar'
               className='hidden xl:block flex-none sticky top-8 w-96 border-l dark:border-gray-800 pl-12 border-gray-100'>
               <SideBar {...props} />
             </div>
-          )}
+          )} */}
         </div>
 
         <div className='fixed right-4 bottom-4 z-20'>
@@ -125,7 +125,7 @@ const LayoutBase = props => {
         </div>
 
         {/* 搜索框 */}
-        <AlgoliaSearchModal cRef={searchModal} {...props} />
+        {/* <AlgoliaSearchModal cRef={searchModal} {...props} /> */}
 
         <Footer {...props} />
       </div>
@@ -198,7 +198,7 @@ const LayoutArchive = props => {
   const { archivePosts } = props
   return (
     <>
-      <div className='mb-10 pb-20 md:py-12 p-3  min-h-screen w-full'>
+      <div className='mb-10 pb-20 p-3 min-h-screen w-full flex flex-col gap-4'>
         {Object.keys(archivePosts).map(archiveTitle => (
           <BlogArchiveItem
             key={archiveTitle}
