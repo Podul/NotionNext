@@ -1,8 +1,7 @@
-import BLOG from '@/blog.config'
-import { getGlobalData } from '@/lib/db/getSiteData'
-import { useRouter } from 'next/router'
-import { getLayoutByTheme } from '@/themes/theme'
 import { siteConfig } from '@/lib/config'
+import { getGlobalData } from '@/lib/db/getSiteData'
+import { getLayoutByTheme } from '@/themes/theme'
+import { useRouter } from 'next/router'
 
 /**
  * 注册
@@ -11,7 +10,10 @@ import { siteConfig } from '@/lib/config'
  */
 const SignUp = props => {
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme({ theme: siteConfig('THEME'), router: useRouter() })
+  const Layout = getLayoutByTheme({
+    theme: siteConfig('THEME'),
+    router: useRouter()
+  })
   return <Layout {...props} />
 }
 
@@ -21,8 +23,7 @@ export async function getStaticProps() {
 
   delete props.allPages
   return {
-    props,
-    revalidate: parseInt(BLOG.NEXT_REVALIDATE_SECOND)
+    props
   }
 }
 

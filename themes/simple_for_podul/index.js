@@ -4,7 +4,6 @@ import NotionPage from '@/components/NotionPage'
 import { siteConfig } from '@/lib/config'
 import { useGlobal } from '@/lib/global'
 import { isBrowser } from '@/lib/utils'
-import { Transition } from '@headlessui/react'
 import dynamic from 'next/dynamic'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
@@ -12,6 +11,12 @@ import { createContext, useContext, useEffect, useRef } from 'react'
 import BlogPostBar from './components/BlogPostBar'
 import CONFIG from './config'
 import { Style } from './style'
+// const BlogListPage = dynamic(() => import('./components/BlogListPage'), {
+//   ssr: false
+// })
+
+import { Transition } from '@headlessui/react'
+import BlogListPage from './components/BlogListPage'
 
 // const AlgoliaSearchModal = dynamic(
 //   () => import('@/components/AlgoliaSearchModal'),
@@ -48,9 +53,6 @@ const SearchInput = dynamic(() => import('./components/SearchInput'), {
   ssr: false
 })
 const WWAds = dynamic(() => import('@/components/WWAds'), { ssr: false })
-const BlogListPage = dynamic(() => import('./components/BlogListPage'), {
-  ssr: false
-})
 const RecommendPosts = dynamic(() => import('./components/RecommendPosts'), {
   ssr: false
 })

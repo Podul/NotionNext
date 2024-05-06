@@ -25,24 +25,28 @@ export async function getStaticProps({ params: { keyword, page } }) {
     pageType: ['Post']
   })
   const { allPages } = props
-  const allPosts = allPages?.filter(page => page.type === 'Post' && page.status === 'Published')
+  const allPosts = allPages?.filter(
+    page => page.type === 'Post' && page.status === 'Published'
+  )
   props.posts = await filterByMemCache(allPosts, keyword)
   props.postCount = props.posts.length
   // 处理分页
-  props.posts = props.posts.slice(siteConfig('POSTS_PER_PAGE') * (page - 1), siteConfig('POSTS_PER_PAGE') * page)
+  props.posts = props.posts.slice(
+    siteConfig('POSTS_PER_PAGE') * (page - 1),
+    siteConfig('POSTS_PER_PAGE') * page
+  )
   props.keyword = keyword
   props.page = page
   delete props.allPages
   return {
-    props,
-    revalidate: parseInt(BLOG.NEXT_REVALIDATE_SECOND)
+    props
   }
 }
 
 export async function getStaticPaths() {
   return {
     paths: [{ params: { keyword: BLOG.TITLE, page: '1' } }],
-    fallback: true
+    fallback: false
   }
 }
 

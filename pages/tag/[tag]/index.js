@@ -1,4 +1,3 @@
-import BLOG from '@/blog.config'
 import { siteConfig } from '@/lib/config'
 import { getGlobalData } from '@/lib/db/getSiteData'
 import { getLayoutByTheme } from '@/themes/theme'
@@ -11,7 +10,10 @@ import { useRouter } from 'next/router'
  */
 const Tag = props => {
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme({ theme: siteConfig('THEME'), router: useRouter() })
+  const Layout = getLayoutByTheme({
+    theme: siteConfig('THEME'),
+    router: useRouter()
+  })
 
   return <Layout {...props} />
 }
@@ -38,8 +40,7 @@ export async function getStaticProps({ params: { tag } }) {
   props.tag = tag
   delete props.allPages
   return {
-    props,
-    revalidate: parseInt(BLOG.NEXT_REVALIDATE_SECOND)
+    props
   }
 }
 
@@ -65,7 +66,7 @@ export async function getStaticPaths() {
     paths: Object.keys(tagNames).map(index => ({
       params: { tag: tagNames[index] }
     })),
-    fallback: true
+    fallback: false
   }
 }
 

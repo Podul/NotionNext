@@ -1,4 +1,3 @@
-import BLOG from '@/blog.config'
 import { siteConfig } from '@/lib/config'
 import { getGlobalData } from '@/lib/db/getSiteData'
 import { getLayoutByTheme } from '@/themes/theme'
@@ -12,7 +11,10 @@ import { useRouter } from 'next/router'
 
 export default function Category(props) {
   // 根据页面路径加载不同Layout文件
-  const Layout = getLayoutByTheme({ theme: siteConfig('THEME'), router: useRouter() })
+  const Layout = getLayoutByTheme({
+    theme: siteConfig('THEME'),
+    router: useRouter()
+  })
 
   return <Layout {...props} />
 }
@@ -28,7 +30,10 @@ export async function getStaticProps({ params: { category, page } }) {
   // 处理文章页数
   props.postCount = props.posts.length
   // 处理分页
-  props.posts = props.posts.slice(siteConfig('POSTS_PER_PAGE') * (page - 1), siteConfig('POSTS_PER_PAGE') * page)
+  props.posts = props.posts.slice(
+    siteConfig('POSTS_PER_PAGE') * (page - 1),
+    siteConfig('POSTS_PER_PAGE') * page
+  )
 
   delete props.allPages
   props.page = page
@@ -36,8 +41,7 @@ export async function getStaticProps({ params: { category, page } }) {
   props = { ...props, category, page }
 
   return {
-    props,
-    revalidate: parseInt(BLOG.NEXT_REVALIDATE_SECOND)
+    props
   }
 }
 
@@ -50,7 +54,9 @@ export async function getStaticPaths() {
     // 过滤状态类型
     const categoryPosts = allPages
       ?.filter(page => page.type === 'Post' && page.status === 'Published')
-      .filter(post => post && post.category && post.category.includes(category.name))
+      .filter(
+        post => post && post.category && post.category.includes(category.name)
+      )
     // 处理文章页数
     const postCount = categoryPosts.length
     const totalPages = Math.ceil(postCount / siteConfig('POSTS_PER_PAGE'))
@@ -63,6 +69,6 @@ export async function getStaticPaths() {
 
   return {
     paths,
-    fallback: true
+    fallback: false
   }
 }

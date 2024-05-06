@@ -30,6 +30,7 @@ function scanSubdirectories(directory) {
 // 扫描项目 /themes下的目录名
 const themes = scanSubdirectories(path.resolve(__dirname, 'themes'))
 module.exports = withBundleAnalyzer({
+  output: 'export',
   images: {
     // 图片压缩
     formats: ['image/avif', 'image/webp'],
@@ -43,44 +44,6 @@ module.exports = withBundleAnalyzer({
       'p1.qhimg.com',
       'webmention.io',
       'ko-fi.com'
-    ]
-  },
-  // 默认将feed重定向至 /public/rss/feed.xml
-  async redirects() {
-    return [
-      {
-        source: '/feed',
-        destination: '/rss/feed.xml',
-        permanent: true
-      }
-    ]
-  },
-  async rewrites() {
-    return [
-      {
-        source: '/:path*.html',
-        destination: '/:path*'
-      }
-    ]
-  },
-  async headers() {
-    return [
-      {
-        source: '/:path*{/}?',
-        headers: [
-          { key: 'Access-Control-Allow-Credentials', value: 'true' },
-          { key: 'Access-Control-Allow-Origin', value: '*' },
-          {
-            key: 'Access-Control-Allow-Methods',
-            value: 'GET,OPTIONS,PATCH,DELETE,POST,PUT'
-          },
-          {
-            key: 'Access-Control-Allow-Headers',
-            value:
-              'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
-          }
-        ]
-      }
     ]
   },
   webpack: (config, { dev, isServer }) => {

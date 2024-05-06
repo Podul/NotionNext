@@ -24,7 +24,7 @@ export async function getStaticPaths() {
   if (!BLOG.isProd) {
     return {
       paths: [],
-      fallback: true
+      fallback: false
     }
   }
 
@@ -35,9 +35,13 @@ export async function getStaticPaths() {
     paths: allPages
       ?.filter(row => checkSlug(row))
       .map(row => ({
-        params: { prefix: row.slug.split('/')[0], slug: row.slug.split('/')[1], suffix: row.slug.split('/').slice(1) }
+        params: {
+          prefix: row.slug.split('/')[0],
+          slug: row.slug.split('/')[1],
+          suffix: row.slug.split('/').slice(1)
+        }
       })),
-    fallback: true
+    fallback: false
   }
 }
 
@@ -57,7 +61,10 @@ export async function getStaticProps({ params: { prefix, slug, suffix } }) {
   const props = await getGlobalData({ from })
   // 在列表内查找文章
   props.post = props?.allPages?.find(p => {
-    return p.type.indexOf('Menu') < 0 && (p.slug === fullSlug || p.id === idToUuid(fullSlug))
+    return (
+      p.type.indexOf('Menu') < 0 &&
+      (p.slug === fullSlug || p.id === idToUuid(fullSlug))
+    )
   })
 
   // 处理非列表内文章的内信息
@@ -72,7 +79,7 @@ export async function getStaticProps({ params: { prefix, slug, suffix } }) {
   // 无法获取文章
   if (!props?.post) {
     props.post = null
-    return { props, revalidate: parseInt(BLOG.NEXT_REVALIDATE_SECOND) }
+    return { props }
   }
 
   // 文章内容加载
@@ -85,12 +92,18 @@ export async function getStaticProps({ params: { prefix, slug, suffix } }) {
   }
 
   // 推荐关联文章处理
-  const allPosts = props.allPages?.filter(page => page.type === 'Post' && page.status === 'Published')
+  const allPosts = props.allPages?.filter(
+    page => page.type === 'Post' && page.status === 'Published'
+  )
   if (allPosts && allPosts.length > 0) {
     const index = allPosts.indexOf(props.post)
     props.prev = allPosts.slice(index - 1, index)[0] ?? allPosts.slice(-1)[0]
     props.next = allPosts.slice(index + 1, index + 2)[0] ?? allPosts[0]
-    props.recommendPosts = getRecommendPost(props.post, allPosts, siteConfig('POST_RECOMMEND_COUNT'))
+    props.recommendPosts = getRecommendPost(
+      props.post,
+      allPosts,
+      siteConfig('POST_RECOMMEND_COUNT')
+    )
   } else {
     props.prev = null
     props.next = null
@@ -99,8 +112,7 @@ export async function getStaticProps({ params: { prefix, slug, suffix } }) {
 
   delete props.allPages
   return {
-    props,
-    revalidate: parseInt(BLOG.NEXT_REVALIDATE_SECOND)
+    props
   }
 }
 

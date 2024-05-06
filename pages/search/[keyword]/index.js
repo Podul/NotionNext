@@ -23,7 +23,9 @@ export async function getStaticProps({ params: { keyword } }) {
     pageType: ['Post']
   })
   const { allPages } = props
-  const allPosts = allPages?.filter(page => page.type === 'Post' && page.status === 'Published')
+  const allPosts = allPages?.filter(
+    page => page.type === 'Post' && page.status === 'Published'
+  )
   props.posts = await filterByMemCache(allPosts, keyword)
   props.postCount = props.posts.length
   // 处理分页
@@ -34,15 +36,14 @@ export async function getStaticProps({ params: { keyword } }) {
   }
   props.keyword = keyword
   return {
-    props,
-    revalidate: parseInt(BLOG.NEXT_REVALIDATE_SECOND)
+    props
   }
 }
 
 export async function getStaticPaths() {
   return {
     paths: [{ params: { keyword: BLOG.TITLE } }],
-    fallback: true
+    fallback: false
   }
 }
 

@@ -1,8 +1,7 @@
 import BLOG, { LAYOUT_MAPPINGS } from '@/blog.config'
 import * as ThemeComponents from '@theme-components'
 import getConfig from 'next/config'
-import dynamic from 'next/dynamic'
-import { getQueryParam, getQueryVariable, isBrowser } from '../lib/utils'
+import { getQueryVariable, isBrowser } from '../lib/utils'
 
 // 在next.config.js中扫描所有主题
 export const { THEMES = [] } = getConfig().publicRuntimeConfig
@@ -12,12 +11,8 @@ export const { THEMES = [] } = getConfig().publicRuntimeConfig
  * @param {*} themeQuery
  * @returns
  */
-export const getGlobalLayoutByTheme = themeQuery => {
-  if (themeQuery !== BLOG.THEME) {
-    return dynamic(() => import(`@/themes/${themeQuery}`).then(m => m[getLayoutNameByPath(-1)]), { ssr: true })
-  } else {
-    return ThemeComponents[getLayoutNameByPath('-1')]
-  }
+export const getGlobalLayoutByTheme = () => {
+  return ThemeComponents[getLayoutNameByPath('-1')]
 }
 
 /**
@@ -27,34 +22,12 @@ export const getGlobalLayoutByTheme = themeQuery => {
  * @returns
  */
 export const getLayoutByTheme = ({ router, theme }) => {
-  const themeQuery = getQueryParam(router.asPath, 'theme') || theme
-  if (themeQuery !== BLOG.THEME) {
-    return dynamic(
-      () =>
-        import(`@/themes/${themeQuery}`).then(m => {
-          setTimeout(() => {
-            checkThemeDOM()
-          }, 500)
-
-          const components = m[getLayoutNameByPath(router.pathname, router.asPath)]
-          if (components) {
-            return components
-          } else {
-            return m.LayoutSlug
-          }
-        }),
-      { ssr: true }
-    )
+  const components =
+    ThemeComponents[getLayoutNameByPath(router.pathname, router.asPath)]
+  if (components) {
+    return components
   } else {
-    setTimeout(() => {
-      checkThemeDOM()
-    }, 100)
-    const components = ThemeComponents[getLayoutNameByPath(router.pathname, router.asPath)]
-    if (components) {
-      return components
-    } else {
-      return ThemeComponents.LayoutSlug
-    }
+    return ThemeComponents.LayoutSlug
   }
 }
 
